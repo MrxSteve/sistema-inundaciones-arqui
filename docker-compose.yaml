@@ -1,0 +1,63 @@
+version: '3.9'
+
+services:
+  sistema-inundaciones-db:
+    image: postgres:14
+    container_name: sistema-inundaciones-postgres
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "${DB_PORT}:5432"
+    volumes:
+      - sistema_inundaciones_postgres_data:/var/lib/postgresql/data
+    networks:
+      - sistema-inundaciones-net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME} -d ${DB_NAME}"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  sistema-inundaciones-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: sistema-inundaciones-api
+    depends_on:
+      sistema-inundaciones-db:
+        condition: service_healthy
+    env_file: .env
+    environment:
+      DB_HOST: sistema-inundaciones-db
+      DB_PORT: 5432
+      DB_NAME: ${DB_NAME}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      JWT_SECRET: ${JWT_SECRET}
+      ADMIN_EMAIL: ${ADMIN_EMAIL}
+      ADMIN_PASS: ${ADMIN_PASS}
+      EMAIL_USERNAME: ${EMAIL_USERNAME}
+      EMAIL_PASSWORD: ${EMAIL_PASSWORD}
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
+    ports:
+      - "8085:8085"
+    networks:
+      - sistema-inundaciones-net
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8085/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 120s
+
+volumes:
+  sistema_inundaciones_postgres_data:
+
+networks:
+  sistema-inundaciones-net:
+    driver: bridge
