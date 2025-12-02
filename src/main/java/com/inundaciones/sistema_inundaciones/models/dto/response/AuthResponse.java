@@ -4,7 +4,9 @@ import lombok.*;
 
 @NoArgsConstructor @AllArgsConstructor
 @Getter @Setter @Builder
-public class LoginResponse {
+public class AuthResponse {
     private String token;
-    private String tipo;
+    @Builder.Default
+    private String tokenType = "Bearer";
+    private UsuarioResponse usuario;
 }

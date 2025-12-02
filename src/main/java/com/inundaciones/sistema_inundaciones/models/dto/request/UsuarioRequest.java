@@ -7,6 +7,8 @@ import lombok.*;
 @Getter @Setter @Builder
 public class UsuarioRequest {
     private String nombre;
+    private String email;
+    private String password;
     private String telefono;
     private TipoNotificacion tipoNotificacion;
 }

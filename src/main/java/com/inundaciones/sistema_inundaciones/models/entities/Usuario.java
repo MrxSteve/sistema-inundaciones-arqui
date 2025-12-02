@@ -6,13 +6,14 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "usuarios")
 @NoArgsConstructor @AllArgsConstructor
 @Getter @Setter @Builder
 public class Usuario {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -22,6 +23,9 @@ public class Usuario {
 
     @Column(nullable = false, unique = true, length = 100)
     private String email;
+
+    @Column(name = "password")
+    private String password;
 
     @Column(length = 20)
     private String telefono;
@@ -35,6 +39,16 @@ public class Usuario {
     @Builder.Default
     @Column(nullable = false)
     private Boolean activo = true;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "usuarios_roles",
+            joinColumns = @JoinColumn(name = "usuario_id"),
+            inverseJoinColumns = @JoinColumn(name = "rol_id")
+    )
+    @Builder.Default
+    @ToString.Exclude
+    private List<Rol> roles = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
     @Column(name = "tipo_notificacion", nullable = false)
