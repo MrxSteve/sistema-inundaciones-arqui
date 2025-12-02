@@ -1,23 +1,28 @@
 package com.inundaciones.sistema_inundaciones.services.auth;
 
+import com.inundaciones.sistema_inundaciones.models.dto.request.GoogleTokenRequest;
 import com.inundaciones.sistema_inundaciones.models.dto.request.LoginRequest;
 import com.inundaciones.sistema_inundaciones.models.dto.request.UsuarioRequest;
 import com.inundaciones.sistema_inundaciones.models.dto.response.AuthResponse;
 import com.inundaciones.sistema_inundaciones.models.dto.response.UsuarioResponse;
 import com.inundaciones.sistema_inundaciones.models.entities.Rol;
 import com.inundaciones.sistema_inundaciones.models.entities.Usuario;
+import com.inundaciones.sistema_inundaciones.models.enums.TipoNotificacion;
 import com.inundaciones.sistema_inundaciones.repositories.UsuarioRepository;
 import com.inundaciones.sistema_inundaciones.security.JwtService;
 import com.inundaciones.sistema_inundaciones.utils.mappers.UsuarioMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,6 +37,7 @@ public class AuthServiceImpl implements IAuthService {
     private final UserDetailsService userDetailsService;
     private final JwtService jwtService;
     private final IUserService userService;
+    private final GoogleOAuthService googleOAuthService;
 
     @Override
     public UsuarioResponse register(UsuarioRequest request) {
@@ -102,6 +108,77 @@ public class AuthServiceImpl implements IAuthService {
         Usuario actualizado = usuarioRepository.save(usuario);
 
         return usuarioMapper.toResponse(actualizado);
+    }
+
+    @Override
+    public AuthResponse loginWithGoogle(GoogleTokenRequest request) {
+        try {
+            var payload = googleOAuthService.verifyGoogleToken(request.getToken());
+
+            String email = payload.getEmail();
+            String nombre = (String) payload.get("name");
+            String googleId = payload.getSubject();
+            String avatarUrl = (String) payload.get("picture");
+
+            Usuario usuario = usuarioRepository.findByEmail(email)
+                    .orElse(usuarioRepository.findByGoogleId(googleId).orElse(null));
+
+            if (usuario == null) {
+                List<Rol> roles = new ArrayList<>();
+                roles.add(rolService.buscarEntidadPorNombre("USUARIO"));
+
+                usuario = Usuario.builder()
+                        .nombre(nombre)
+                        .email(email)
+                        .googleId(googleId)
+                        .avatarUrl(avatarUrl)
+                        .activo(true)
+                        .roles(roles)
+                        .tipoNotificacion(TipoNotificacion.AMBOS)
+                        .createdAt(LocalDateTime.now())
+                        .build();
+
+                usuario = usuarioRepository.save(usuario);
+            } else {
+                boolean needsUpdate = false;
+                if (usuario.getGoogleId() == null) {
+                    usuario.setGoogleId(googleId);
+                    needsUpdate = true;
+                }
+                if (avatarUrl != null && !avatarUrl.equals(usuario.getAvatarUrl())) {
+                    usuario.setAvatarUrl(avatarUrl);
+                    needsUpdate = true;
+                }
+                if (needsUpdate) {
+                    usuario = usuarioRepository.save(usuario);
+                }
+            }
+
+            UserDetails userDetails = new User(
+                    usuario.getEmail(),
+                    "",
+                    usuario.getActivo(),
+                    true,
+                    true,
+                    true,
+                    usuario.getRoles().stream()
+                            .map(rol -> new SimpleGrantedAuthority("ROLE_" + rol.getNombre()))
+                            .collect(java.util.stream.Collectors.toList())
+            );
+
+            String jwtToken = jwtService.generateToken(userDetails);
+
+            UsuarioResponse usuarioResponse = usuarioMapper.toResponse(usuario);
+
+            return AuthResponse.builder()
+                    .token(jwtToken)
+                    .tokenType("Bearer")
+                    .usuario(usuarioResponse)
+                    .build();
+
+        } catch (Exception e) {
+            throw new RuntimeException("Error al autenticar con Google: " + e.getMessage());
+        }
     }
 
 }
