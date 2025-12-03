@@ -53,6 +53,7 @@ public class SecurityConfig {
 
                         .requestMatchers("/api/esp32/numeros-sms").permitAll()
                         .requestMatchers("/api/alertas/esp32").permitAll()
+                        .requestMatchers("/api/alertas/public/**").permitAll()
 
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
 

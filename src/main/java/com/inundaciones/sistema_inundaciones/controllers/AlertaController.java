@@ -52,8 +52,7 @@ public class AlertaController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping
-    @PreAuthorize("hasRole('USER')")
+    @GetMapping("/public/todas")
     @Operation(summary = "Obtener todas las alertas",
                description = "Lista paginada de todas las alertas del sistema")
     public ResponseEntity<Page<AlertaResponse>> obtenerAlertas(Pageable pageable) {
@@ -61,8 +60,7 @@ public class AlertaController {
         return ResponseEntity.ok(alertas);
     }
 
-    @GetMapping("/tipo/{tipo}")
-    @PreAuthorize("hasRole('USER')")
+    @GetMapping("/public/tipo/{tipo}")
     @Operation(summary = "Obtener alertas por tipo",
                description = "Lista paginada de alertas filtradas por tipo")
     public ResponseEntity<Page<AlertaResponse>> obtenerAlertasPorTipo(
@@ -73,8 +71,7 @@ public class AlertaController {
         return ResponseEntity.ok(alertas);
     }
 
-    @GetMapping("/activas")
-    @PreAuthorize("hasRole('USER')")
+    @GetMapping("/public/activas")
     @Operation(summary = "Obtener alertas activas",
                description = "Lista de todas las alertas que están actualmente activas")
     public ResponseEntity<List<AlertaResponse>> obtenerAlertasActivas() {
@@ -82,8 +79,7 @@ public class AlertaController {
         return ResponseEntity.ok(alertasActivas);
     }
 
-    @GetMapping("/{id}")
-    @PreAuthorize("hasRole('USER')")
+    @GetMapping("/public/{id}")
     @Operation(summary = "Obtener alerta por ID",
                description = "Obtiene los detalles de una alerta específica")
     public ResponseEntity<AlertaResponse> obtenerAlertaPorId(@PathVariable Long id) {
