@@ -4,13 +4,18 @@ import com.inundaciones.sistema_inundaciones.models.dto.request.AlertaRequest;
 import com.inundaciones.sistema_inundaciones.models.dto.response.AlertaResponse;
 import com.inundaciones.sistema_inundaciones.models.entities.Alerta;
 import org.mapstruct.Mapper;
-import org.mapstruct.NullValuePropertyMappingStrategy;
-import org.mapstruct.ReportingPolicy;
+import org.mapstruct.Mapping;
 
-@Mapper(componentModel = "spring",
-        nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
-        unmappedTargetPolicy = ReportingPolicy.IGNORE)
+@Mapper(componentModel = "spring")
 public interface AlertaMapper {
-    AlertaResponse toResponse(Alerta alerta);
+
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "estado", ignore = true)
+    @Mapping(target = "fechaCreacion", ignore = true)
+    @Mapping(target = "fechaResolucion", ignore = true)
+    @Mapping(target = "emailsEnviados", ignore = true)
+    @Mapping(target = "smsEnviados", ignore = true)
     Alerta toEntity(AlertaRequest request);
+
+    AlertaResponse toResponse(Alerta alerta);
 }

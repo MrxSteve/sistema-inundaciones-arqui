@@ -1,22 +1,26 @@
 package com.inundaciones.sistema_inundaciones.models.dto.response;
 
 import com.inundaciones.sistema_inundaciones.models.enums.TipoAlerta;
+import com.inundaciones.sistema_inundaciones.models.enums.EstadoAlerta;
 import lombok.*;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @NoArgsConstructor @AllArgsConstructor
 @Getter @Setter @Builder
 public class AlertaResponse {
     private Long id;
-    private BigDecimal distanciaCm;
-    private TipoAlerta tipoAlerta;
+    private TipoAlerta tipo;
+    private EstadoAlerta estado;
     private String mensaje;
-    private Integer usuariosNotificados;
+    private Float distanciaDetectada;
+    private String ubicacion;
+    private Double latitud;
+    private Double longitud;
+    private LocalDateTime fechaCreacion;
+    private LocalDateTime fechaResolucion;
     private Integer emailsEnviados;
     private Integer smsEnviados;
-    private BigDecimal costoTotal;
-    private Boolean procesada;
-    private LocalDateTime createdAt;
+    private String dispositivoId;
+    private String observaciones;
 }

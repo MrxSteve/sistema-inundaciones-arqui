@@ -79,6 +79,12 @@
 			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
 
+        <!-- Thymeleaf for email templates -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
+
         <!-- Google OAuth2 Client -->
         <dependency>
             <groupId>com.google.api-client</groupId>

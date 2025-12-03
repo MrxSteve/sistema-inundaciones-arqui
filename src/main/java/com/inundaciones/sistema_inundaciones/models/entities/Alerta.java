@@ -1,11 +1,11 @@
 package com.inundaciones.sistema_inundaciones.models.entities;
 
 import com.inundaciones.sistema_inundaciones.models.enums.TipoAlerta;
+import com.inundaciones.sistema_inundaciones.models.enums.EstadoAlerta;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
@@ -13,42 +13,59 @@ import java.time.LocalDateTime;
 @NoArgsConstructor @AllArgsConstructor
 @Getter @Setter @Builder
 public class Alerta {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "distancia_cm", nullable = false, precision = 5, scale = 2)
-    private BigDecimal distanciaCm;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private TipoAlerta tipo;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "tipo_alerta", nullable = false)
-    private TipoAlerta tipoAlerta;
+    @Column(nullable = false)
+    @Builder.Default
+    private EstadoAlerta estado = EstadoAlerta.ACTIVA;
 
-    @Column(nullable = false, columnDefinition = "TEXT")
+    @Column(nullable = false, length = 500)
     private String mensaje;
 
-    @Builder.Default
-    @Column(name = "usuarios_notificados")
-    private Integer usuariosNotificados = 0;
+    @Column(name = "distancia_cm", nullable = false)
+    private Float distanciaDetectada;
+
+    @Column(name = "ubicacion", length = 200)
+    private String ubicacion;
+
+    @Column(name = "latitud")
+    private Double latitud;
+
+    @Column(name = "longitud")
+    private Double longitud;
+
+    @CreationTimestamp
+    @Column(name = "created_at", nullable = false)
+    private LocalDateTime fechaCreacion;
+
+    @Column(name = "fecha_resolucion")
+    private LocalDateTime fechaResolucion;
 
     @Builder.Default
-    @Column(name = "emails_enviados")
+    @Column(name = "emails_enviados", nullable = false)
     private Integer emailsEnviados = 0;
 
     @Builder.Default
-    @Column(name = "sms_enviados")
+    @Column(name = "sms_enviados", nullable = false)
     private Integer smsEnviados = 0;
 
-    @Builder.Default
-    @Column(name = "costo_total", precision = 10, scale = 2)
-    private BigDecimal costoTotal = BigDecimal.ZERO;
+    @Column(name = "dispositivo_id", length = 50)
+    private String dispositivoId; // ID del ESP32 que envía la alerta
 
-    @Builder.Default
-    @Column(nullable = false)
-    private Boolean procesada = false;
+    @Column(name = "observaciones", length = 1000)
+    private String observaciones;
 
-    @CreationTimestamp
-    @Column(name = "created_at", nullable = false, updatable = false)
-    private LocalDateTime createdAt;
+    // Método para marcar como resuelta
+    public void resolver(String observaciones) {
+        this.estado = EstadoAlerta.RESUELTA;
+        this.fechaResolucion = LocalDateTime.now();
+        this.observaciones = observaciones;
+    }
 }

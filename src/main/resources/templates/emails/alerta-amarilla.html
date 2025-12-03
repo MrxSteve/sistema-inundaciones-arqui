@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alerta Amarilla - Precaución</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            background: linear-gradient(135deg, #ffc107, #e0a800);
+            color: #212529;
+            padding: 30px 20px;
+            text-align: center;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .alert-icon {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+        .content {
+            padding: 30px 20px;
+        }
+        .alert-info {
+            background-color: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 6px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .data-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .data-row:last-child {
+            border-bottom: none;
+        }
+        .label {
+            font-weight: bold;
+            color: #333;
+        }
+        .value {
+            color: #666;
+        }
+        .footer {
+            background-color: #f8f9fa;
+            padding: 20px;
+            text-align: center;
+            font-size: 12px;
+            color: #666;
+        }
+        .precaution-note {
+            background-color: #664d03;
+            color: white;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 20px 0;
+            text-align: center;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="alert-icon">⚠️</div>
+            <h1 th:text="${tipoAlerta}">ALERTA AMARILLA</h1>
+            <p th:text="${descripcionAlerta}">Precaución - Nivel de agua elevado</p>
+        </div>
+
+        <div class="content">
+            <p><strong>Estimado/a <span th:text="${nombreUsuario}">Usuario</span>,</strong></p>
+
+            <p>Se ha detectado un <strong>nivel elevado de agua</strong> en nuestro sistema de monitoreo. Le recomendamos estar atento a la situación y tomar las precauciones necesarias.</p>
+
+            <div class="precaution-note">
+                ⚠️ MANTÉNGASE ALERTA ⚠️
+            </div>
+
+            <div class="alert-info">
+                <p><strong>Mensaje de la Alerta:</strong></p>
+                <p th:text="${mensaje}">Mensaje de alerta</p>
+            </div>
+
+            <h3>Detalles de la Detección:</h3>
+            <div class="data-row">
+                <span class="label">Nivel de Agua:</span>
+                <span class="value"><span th:text="${distancia}">25</span> cm</span>
+            </div>
+            <div class="data-row">
+                <span class="label">Ubicación:</span>
+                <span class="value" th:text="${ubicacion}">Ubicación no especificada</span>
+            </div>
+            <div class="data-row">
+                <span class="label">Fecha y Hora:</span>
+                <span class="value" th:text="${fechaHora}">01/12/2024 14:30:00</span>
+            </div>
+            <div class="data-row">
+                <span class="label">Dispositivo:</span>
+                <span class="value" th:text="${dispositivoId}">ESP32-001</span>
+            </div>
+
+            <h3>⚠️ Recomendaciones de Precaución:</h3>
+            <ul>
+                <li><strong>Monitoreo:</strong> Manténgase atento a futuras actualizaciones</li>
+                <li><strong>Preparación:</strong> Tenga listo un plan de evacuación si es necesario</li>
+                <li><strong>Comunicación:</strong> Informe a familiares sobre la situación</li>
+                <li><strong>Objetos de valor:</strong> Considere mover objetos importantes a lugares seguros</li>
+                <li><strong>Vehículos:</strong> Si es posible, mueva vehículos a zonas más altas</li>
+            </ul>
+
+            <p>Continuaremos monitoreando la situación y le informaremos sobre cualquier cambio importante.</p>
+
+            <p><strong>Este es un mensaje automatizado del sistema de monitoreo. No responder a este email.</strong></p>
+        </div>
+
+        <div class="footer">
+            <p><span th:text="${appName}">Sistema de Inundaciones</span> - Sistema de Alerta Temprana</p>
+            <p>© 2025 Sistema de Monitoreo de Inundaciones. Todos los derechos reservados.</p>
+        </div>
+    </div>
+</body>
+</html>
+

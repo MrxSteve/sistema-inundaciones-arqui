@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alerta Roja - Inundación</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            background: linear-gradient(135deg, #dc3545, #c82333);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .alert-icon {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+        .content {
+            padding: 30px 20px;
+        }
+        .alert-info {
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            border-radius: 6px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .data-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .data-row:last-child {
+            border-bottom: none;
+        }
+        .label {
+            font-weight: bold;
+            color: #333;
+        }
+        .value {
+            color: #666;
+        }
+        .footer {
+            background-color: #f8f9fa;
+            padding: 20px;
+            text-align: center;
+            font-size: 12px;
+            color: #666;
+        }
+        .emergency-note {
+            background-color: #721c24;
+            color: white;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 20px 0;
+            text-align: center;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="alert-icon">🚨</div>
+            <h1 th:text="${tipoAlerta}">ALERTA ROJA</h1>
+            <p th:text="${descripcionAlerta}">Riesgo crítico de inundación</p>
+        </div>
+
+        <div class="content">
+            <p><strong>Estimado/a <span th:text="${nombreUsuario}">Usuario</span>,</strong></p>
+
+            <p>Se ha detectado una <strong>situación crítica</strong> en nuestro sistema de monitoreo de inundaciones. Por favor, tome las precauciones necesarias inmediatamente.</p>
+
+            <div class="emergency-note">
+                ⚠️ ACCIÓN INMEDIATA REQUERIDA ⚠️
+            </div>
+
+            <div class="alert-info">
+                <p><strong>Mensaje de la Alerta:</strong></p>
+                <p th:text="${mensaje}">Mensaje de alerta</p>
+            </div>
+
+            <h3>Detalles de la Detección:</h3>
+            <div class="data-row">
+                <span class="label">Nivel de Agua:</span>
+                <span class="value"><span th:text="${distancia}">20</span> cm</span>
+            </div>
+            <div class="data-row">
+                <span class="label">Ubicación:</span>
+                <span class="value" th:text="${ubicacion}">Ubicación no especificada</span>
+            </div>
+            <div class="data-row">
+                <span class="label">Fecha y Hora:</span>
+                <span class="value" th:text="${fechaHora}">01/12/2024 14:30:00</span>
+            </div>
+            <div class="data-row">
+                <span class="label">Dispositivo:</span>
+                <span class="value" th:text="${dispositivoId}">ESP32-001</span>
+            </div>
+
+            <h3>🆘 Recomendaciones Inmediatas:</h3>
+            <ul>
+                <li><strong>Evacuación:</strong> Si se encuentra en la zona de riesgo, evacúe inmediatamente</li>
+                <li><strong>Comunicación:</strong> Informe a familiares sobre su estado y ubicación</li>
+                <li><strong>Emergencias:</strong> Contacte a servicios de emergencia si es necesario</li>
+                <li><strong>Monitoreo:</strong> Manténgase atento a futuras actualizaciones</li>
+            </ul>
+
+            <p><strong>Este es un mensaje automatizado del sistema de monitoreo. No responder a este email.</strong></p>
+        </div>
+
+        <div class="footer">
+            <p><span th:text="${appName}">Sistema de Inundaciones</span> - Sistema de Alerta Temprana</p>
+            <p>© 2025 Sistema de Monitoreo de Inundaciones. Todos los derechos reservados.</p>
+        </div>
+    </div>
+</body>
+</html>
+

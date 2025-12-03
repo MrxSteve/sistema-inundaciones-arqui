@@ -1,14 +1,14 @@
 package com.inundaciones.sistema_inundaciones.models.enums;
 
-public enum TipoAlerta {
-    ALERTA_ROJA("Alerta Roja", "Riesgo crítico de inundación"),
-    ALERTA_AMARILLA("Alerta Amarilla", "Precaución - Nivel de agua elevado"),
-    SITUACION_NORMALIZADA("Situación Normalizada", "El nivel de agua ha vuelto a la normalidad");
+public enum EstadoAlerta {
+    ACTIVA("Activa", "La alerta está vigente"),
+    RESUELTA("Resuelta", "La situación ha sido normalizada"),
+    CANCELADA("Cancelada", "La alerta fue cancelada manualmente");
 
     private final String nombre;
     private final String descripcion;
 
-    TipoAlerta(String nombre, String descripcion) {
+    EstadoAlerta(String nombre, String descripcion) {
         this.nombre = nombre;
         this.descripcion = descripcion;
     }

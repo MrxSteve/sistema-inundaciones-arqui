@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Situación Normalizada</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            background: linear-gradient(135deg, #28a745, #218838);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .alert-icon {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+        .content {
+            padding: 30px 20px;
+        }
+        .alert-info {
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+            border-radius: 6px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .data-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .data-row:last-child {
+            border-bottom: none;
+        }
+        .label {
+            font-weight: bold;
+            color: #333;
+        }
+        .value {
+            color: #666;
+        }
+        .footer {
+            background-color: #f8f9fa;
+            padding: 20px;
+            text-align: center;
+            font-size: 12px;
+            color: #666;
+        }
+        .success-note {
+            background-color: #155724;
+            color: white;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 20px 0;
+            text-align: center;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="alert-icon">✅</div>
+            <h1 th:text="${tipoAlerta}">SITUACIÓN NORMALIZADA</h1>
+            <p th:text="${descripcionAlerta}">El nivel de agua ha vuelto a la normalidad</p>
+        </div>
+
+        <div class="content">
+            <p><strong>Estimado/a <span th:text="${nombreUsuario}">Usuario</span>,</strong></p>
+
+            <p>Nos complace informarle que la <strong>situación ha sido normalizada</strong>. El nivel de agua ha descendido y ya no representa un riesgo inmediato.</p>
+
+            <div class="success-note">
+                ✅ SITUACIÓN BAJO CONTROL ✅
+            </div>
+
+            <div class="alert-info">
+                <p><strong>Mensaje de Actualización:</strong></p>
+                <p th:text="${mensaje}">La situación ha sido normalizada</p>
+            </div>
+
+            <h3>Detalles de la Actualización:</h3>
+            <div class="data-row">
+                <span class="label">Nivel Actual de Agua:</span>
+                <span class="value"><span th:text="${distancia}">45</span> cm</span>
+            </div>
+            <div class="data-row">
+                <span class="label">Ubicación:</span>
+                <span class="value" th:text="${ubicacion}">Ubicación no especificada</span>
+            </div>
+            <div class="data-row">
+                <span class="label">Fecha y Hora:</span>
+                <span class="value" th:text="${fechaHora}">01/12/2024 16:45:00</span>
+            </div>
+            <div class="data-row">
+                <span class="label">Dispositivo:</span>
+                <span class="value" th:text="${dispositivoId}">ESP32-001</span>
+            </div>
+
+            <h3>💡 Información Importante:</h3>
+            <ul>
+                <li><strong>Monitoreo Continuo:</strong> Nuestro sistema sigue monitoreando la zona 24/7</li>
+                <li><strong>Precaución:</strong> Aunque la situación está normalizada, mantenga precaución en la zona</li>
+                <li><strong>Futuras Alertas:</strong> Recibirá notificaciones si la situación cambia</li>
+                <li><strong>Reporte:</strong> Si observa alguna irregularidad, repórtela a las autoridades</li>
+            </ul>
+
+            <p>Gracias por su atención y por formar parte de nuestro sistema de alerta temprana.</p>
+
+            <p><strong>Este es un mensaje automatizado del sistema de monitoreo. No responder a este email.</strong></p>
+        </div>
+
+        <div class="footer">
+            <p><span th:text="${appName}">Sistema de Inundaciones</span> - Sistema de Alerta Temprana</p>
+            <p>© 2025 Sistema de Monitoreo de Inundaciones. Todos los derechos reservados.</p>
+        </div>
+    </div>
+</body>
+</html>
+
