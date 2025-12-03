@@ -52,6 +52,7 @@ public class SecurityConfig {
                         .requestMatchers("/webjars/**").permitAll()
 
                         .requestMatchers("/api/esp32/numeros-sms").permitAll()
+                        .requestMatchers("/api/alertas/esp32").permitAll()
 
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
 
