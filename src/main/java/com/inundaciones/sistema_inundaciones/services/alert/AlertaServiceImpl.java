@@ -4,6 +4,7 @@ import com.inundaciones.sistema_inundaciones.models.dto.request.AlertaRequest;
 import com.inundaciones.sistema_inundaciones.models.dto.response.AlertaResponse;
 import com.inundaciones.sistema_inundaciones.models.entities.Alerta;
 import com.inundaciones.sistema_inundaciones.models.entities.Usuario;
+import com.inundaciones.sistema_inundaciones.models.enums.EstadoAlerta;
 import com.inundaciones.sistema_inundaciones.models.enums.TipoAlerta;
 import com.inundaciones.sistema_inundaciones.repositories.AlertaRepository;
 import com.inundaciones.sistema_inundaciones.repositories.UsuarioRepository;
@@ -92,8 +93,17 @@ public class AlertaServiceImpl implements IAlertaService {
     @Override
     public List<AlertaResponse> obtenerAlertasActivas() {
         List<Alerta> alertasActivas = alertaRepository.findByEstadoOrderByFechaCreacionDesc(
-                com.inundaciones.sistema_inundaciones.models.enums.EstadoAlerta.ACTIVA);
+                EstadoAlerta.ACTIVA);
         return alertasActivas.stream()
+                .map(alertaMapper::toResponse)
+                .toList();
+    }
+
+    @Override
+    public List<AlertaResponse> obtenerAlertasResueltas() {
+        List<Alerta> alertasResueltas = alertaRepository.findByEstadoOrderByFechaCreacionDesc(
+                EstadoAlerta.RESUELTA);
+        return alertasResueltas.stream()
                 .map(alertaMapper::toResponse)
                 .toList();
     }

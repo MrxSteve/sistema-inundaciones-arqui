@@ -79,6 +79,14 @@ public class AlertaController {
         return ResponseEntity.ok(alertasActivas);
     }
 
+    @GetMapping("/public/resueltas")
+    @Operation(summary = "Obtener alertas resueltas",
+                description = "Lista de todas las alertas que han sido resueltas")
+    public ResponseEntity<List<AlertaResponse>> obtenerAlertasResueltas() {
+        List<AlertaResponse> alertasResueltas = alertaService.obtenerAlertasResueltas();
+        return ResponseEntity.ok(alertasResueltas);
+    }
+
     @GetMapping("/public/{id}")
     @Operation(summary = "Obtener alerta por ID",
                description = "Obtiene los detalles de una alerta específica")

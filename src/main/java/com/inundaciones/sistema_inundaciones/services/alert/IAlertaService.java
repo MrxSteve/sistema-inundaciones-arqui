@@ -16,4 +16,5 @@ public interface IAlertaService {
     AlertaResponse obtenerAlertaPorId(Long id);
     AlertaResponse resolverAlerta(Long id, String observaciones);
     List<AlertaResponse> obtenerAlertasActivas();
+    List<AlertaResponse> obtenerAlertasResueltas();
 }
