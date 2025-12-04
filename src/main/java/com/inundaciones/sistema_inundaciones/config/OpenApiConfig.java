@@ -23,10 +23,13 @@ public class OpenApiConfig {
 
         return new OpenAPI()
                 .info(new Info()
-                        .title("Sistema de inundaciones API")
+                        .title("SIstema de inundaciones API")
                         .description("Sistema para control de inundaciones con ESP32 y Spring Boot")
                         .version("v1.0.0"))
                 .servers(List.of(
+                        new Server()
+                                .url("https://sistema-inundaciones-arqui-production.up.railway.app")
+                                .description("Servidor de Producción"),
                         new Server()
                                 .url("http://localhost:" + serverPort)
                                 .description("Servidor de Desarrollo")))
